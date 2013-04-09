@@ -1,4 +1,5 @@
 name = Livereload Grunt
 description = custom
 package = custom
+dependencies[] = libraries
 core = 7.x

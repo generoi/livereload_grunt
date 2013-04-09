@@ -12,14 +12,18 @@ child directories into valid urls with wildcard vhosts in apache.
 
 For example /var/www/<USER>/<SUBDIR> -> http://<SUBDIR>.<USER>.example.org
 
+This used node-crc (https://github.com/alexgorbatchev/node-crc) both in Grunt
+and in the browser. Currently it's shipped as is.
+
 INSTALLATION
 ------------
 
 1. Install the required grunt tasks.
    `npm install grunt grunt-regarde grunt-contrib-livereload --save-dev`
 2. Place and configure the Gruntfile.example.js as Gruntfile.js in your Drupal root.
-3. Run: `grunt regarde` within the Drupal tree.
-4. Enable the module
+3. Install https://github.com/alexgorbatchev/node-crc in sites/all/libraries/node-crc
+4. Run `grunt` within the Drupal tree.
+5. Enable the module
 
 CONFIGURATION
 -------------
