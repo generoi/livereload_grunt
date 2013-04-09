@@ -1,0 +1,4 @@
+name = Livereload Grunt
+description = custom
+package = custom
+core = 7.x

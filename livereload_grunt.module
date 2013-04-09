@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file livereload_grunt.module
+ */
+
+function livereload_grunt_init() {
+  if (user_access('use livereload') && variable_get('livereload_grunt_active', TRUE)) {
+    drupal_add_js(drupal_get_path('module', 'livereload_grunt') . '/js/crc.js');
+    drupal_add_js(drupal_get_path('module', 'livereload_grunt') . '/js/livereload_grunt.js');
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function livereload_grunt_permission() {
+  return array(
+    'use livereload' => array(
+      'title' => t('Use LiveReload'),
+      'description' => t('Adds the livereload.js.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_form_formID_alter().
+ */
+function livereload_grunt_form_system_performance_settings_alter(&$form, &$form_state, $form_id) {
+  global $base_url;
+
+  $form['livereload_grunt'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'LiveReload Grunt',
+  );
+
+  $form['livereload_grunt']['livereload_grunt_active'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add livereload.js hosted by Grunt. <em>Note: this will only work if css aggregation is disabled.</em>'),
+    '#default_value' => variable_get('livereload_grunt_js', TRUE),
+    '#states' => array(
+      'disabled' => array(
+        ':input[name=preprocess_css]' => array('checked' => TRUE),
+      ),
+      'checked' => array(
+        ':input[name=preprocess_css]' => array('checked' => FALSE),
+      ),
+    ),
+    '#disabled' => variable_get('preprocess_css'),
+  );
+
+  $form['#validate'][] = 'livereload_grunt_system_performance_form_validate';
+}
+
+/**
+ * Validation function for enabling livereload
+ */
+function livereload_system_performance_form_validate(&$form, &$form_state) {
+  $values = $form_state['values'];
+
+  if ($values['preprocess_css'] && $values['livereload_grunt_active']) {
+    form_set_error('livereload_grunt_active', t('Cannot enable LiveReload with CSS aggregation enabled. Turn off CSS aggregator to continue.'));
+  }
+}
