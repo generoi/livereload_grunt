@@ -1,0 +1,5 @@
+<?php
+
+function livereload_grunt_uninstall() {
+  variable_del('livereload_grunt_active');
+}
