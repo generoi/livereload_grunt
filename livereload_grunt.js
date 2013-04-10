@@ -2,10 +2,15 @@
   var g = d.createElement('script'),
       s = d.scripts[0],
       host = location.host.split(':')[0],
-      hash = crc.crc32(host),
       // Logic duplicated in Gruntfile.js
-      port = ('' + hash).slice(-5);
+      generatePort = function(host) {
+        var port = host;
+        do {
+          port = ('' + crc.crc32(port)).slice(-5);
+        } while (port < 1024 || port > 65535);
+        return port;
+      };
 
-  g.src = '//' + host + ':' + port + '/livereload.js?snipver=1';
+  g.src = '//' + host + ':' + generatePort(host) + '/livereload.js?snipver=1';
   s.parentNode.insertBefore(g, s);
 }(document));

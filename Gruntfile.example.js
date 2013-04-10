@@ -1,6 +1,13 @@
 'use strict';
 var path = require('path')
   , crc = require('crc')
+  , generatePort = function(host) {
+    var port = host;
+    do {
+      port = ('' + crc.crc32(port)).slice(-5);
+    } while (port < 1024 || port > 65535);
+    return port;
+  }
   // For wildcard subdomains which map dir/subdir -> subdir.dir.example.org
   // , host = [dirs[1], dirs[0], 'example.org'].join('.');
   , host = 'example.org';
@@ -8,7 +15,7 @@ var path = require('path')
 module.exports = function(grunt) {
   grunt.initConfig({
     livereload: {
-      port: ('' + crc.crc32(host)).slice(-5),
+      port: generatePort(host),
     },
     regarde: {
       css: {
