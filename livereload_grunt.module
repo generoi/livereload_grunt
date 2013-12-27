@@ -4,10 +4,25 @@
  * @file livereload_grunt.module
  */
 
+/**
+ * Implements hook_init().
+ */
 function livereload_grunt_init() {
   if (user_access('use livereload') && variable_get('livereload_grunt_active', TRUE)) {
     drupal_add_js(libraries_get_path('node-crc') . '/lib/crc.js');
     drupal_add_js(drupal_get_path('module', 'livereload_grunt') . '/livereload_grunt.js');
+  }
+}
+
+/**
+ * Implements hook_css_alter().
+ */
+function livereload_grunt_css_alter(&$css) {
+  if (user_access('use livereload') && variable_get('livereload_grunt_active', TRUE)) {
+    // Alter css to display as link tags.
+    foreach ($css as $key => $value) {
+      $css[$key]['preprocess'] = FALSE;
+    }
   }
 }
 
