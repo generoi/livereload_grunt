@@ -19,11 +19,12 @@ INSTALLATION
 ------------
 
 1. Install the required grunt tasks.
-   `npm install grunt grunt-regarde grunt-contrib-livereload --save-dev`
+   `npm install grunt-contrib-watch crc --save-dev`
 2. Place and configure the Gruntfile.example.js as Gruntfile.js in your Drupal root.
 3. Install https://github.com/alexgorbatchev/node-crc in sites/all/libraries/node-crc
-4. Run `grunt` within the Drupal tree.
-5. Enable the module
+   `git submodule add git@github.com:alexgorbatchev/node-crc.git sites/all/libraries/node-crc`
+4. Enable the module
+5. Run `grunt watch` within the Drupal tree.
 
 CONFIGURATION
 -------------
