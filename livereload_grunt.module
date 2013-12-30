@@ -5,10 +5,13 @@
  */
 
 /**
- * Implements hook_init().
+ * Implements hook_page_build().
  */
-function livereload_grunt_init() {
-  if (user_access('use livereload') && variable_get('livereload_grunt_active', TRUE)) {
+function livereload_grunt_page_build(&$page) {
+  global $theme_key;
+  $is_active = user_access('use livereload') && variable_get('livereload_grunt_active', TRUE);
+  $is_default_theme = $theme_key == variable_get('theme_default');
+  if ($is_active && $is_default_theme) {
     drupal_add_js(libraries_get_path('node-crc') . '/lib/crc.js');
     drupal_add_js(drupal_get_path('module', 'livereload_grunt') . '/livereload_grunt.js');
   }
