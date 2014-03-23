@@ -9,7 +9,7 @@
  */
 function livereload_grunt_page_build(&$page) {
   global $theme_key;
-  $is_active = user_access('use livereload') && variable_get('livereload_grunt_active', TRUE);
+  $is_active = user_access('use livereload') && variable_get('livereload_grunt_js', TRUE);
   $is_default_theme = $theme_key == variable_get('theme_default');
   if ($is_active && $is_default_theme) {
     drupal_add_js(libraries_get_path('node-crc') . '/lib/crc.js');
@@ -21,7 +21,7 @@ function livereload_grunt_page_build(&$page) {
  * Implements hook_css_alter().
  */
 function livereload_grunt_css_alter(&$css) {
-  if (user_access('use livereload') && variable_get('livereload_grunt_active', TRUE)) {
+  if (user_access('use livereload') && variable_get('livereload_grunt_js', TRUE)) {
     // Alter css to display as link tags.
     foreach ($css as $key => $value) {
       $css[$key]['preprocess'] = FALSE;
@@ -52,7 +52,7 @@ function livereload_grunt_form_system_performance_settings_alter(&$form, &$form_
     '#title' => 'LiveReload Grunt',
   );
 
-  $form['livereload_grunt']['livereload_grunt_active'] = array(
+  $form['livereload_grunt']['livereload_grunt_js'] = array(
     '#type' => 'checkbox',
     '#title' => t('Add livereload.js hosted by Grunt. <em>Note: this will only work if css aggregation is disabled.</em>'),
     '#default_value' => variable_get('livereload_grunt_js', TRUE),
@@ -76,11 +76,11 @@ function livereload_grunt_form_system_performance_settings_alter(&$form, &$form_
 function livereload_grunt_system_performance_form_validate(&$form, &$form_state) {
   $values = $form_state['values'];
 
-  if ($values['preprocess_css'] && $values['livereload_grunt_active']) {
-    form_set_error('livereload_grunt_active', t('Cannot enable LiveReload with CSS aggregation enabled. Turn off CSS aggregator to continue.'));
+  if ($values['preprocess_css'] && $values['livereload_grunt_js']) {
+    form_set_error('livereload_grunt_js', t('Cannot enable LiveReload with CSS aggregation enabled. Turn off CSS aggregator to continue.'));
   }
 
-  if ($values['livereload_grunt_active'] && libraries_get_path('node-crc') == FALSE) {
-    form_set_error('livereload_grunt_active', t('Ensure the node-crc library is installed before enabling this feature.'));
+  if ($values['livereload_grunt_js'] && libraries_get_path('node-crc') == FALSE) {
+    form_set_error('livereload_grunt_js', t('Ensure the node-crc library is installed before enabling this feature.'));
   }
 }
